@@ -22,7 +22,8 @@ class LLMClient:
 
     def is_available(self) -> bool:
         # Mock provider is always considered available.
-        return self.provider == "mock" or bool(self.api_key)
+        # Mock provider is never considered available for composition; fallback will be used.
+        return self.provider != "mock" and (self.provider == "ollama" or bool(self.api_key))
 
     def generate_json(self, prompt: str, system: Optional[str] = None) -> Optional[Dict[str, Any]]:
         """Generate a deterministic mock JSON response.
